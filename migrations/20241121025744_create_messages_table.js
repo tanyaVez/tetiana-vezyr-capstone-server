@@ -14,7 +14,7 @@ export function up(knex) {
       .onDelete("CASCADE");
 
     table
-      .integer("receiverId")
+      .integer("receiver_id")
       .unsigned()
       .references("id")
       .inTable("user")
