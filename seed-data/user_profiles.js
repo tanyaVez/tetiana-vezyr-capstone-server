@@ -2,7 +2,8 @@ export default [
   {
     user_id: 1,
     role: "mentor",
-    name: "John Doe",
+    first_name: "John",
+    last_name: "Doe",
     bio: "Experienced developer and mentor",
     skills: JSON.stringify(["JavaScript", "Node.js", "React"]), // Ensure this is an array
     availability: JSON.stringify(["Mon", "Wed", "Fri"]), // Make sure this is an array
@@ -12,11 +13,13 @@ export default [
     mentoring_style: "Direct",
     previous_experience: "5+ years in tech",
     goals: "Help mentees become independent developers",
+    mentoring_mode: "online",
   },
   {
     user_id: 2,
     role: "mentee",
-    name: "Jane Smith",
+    first_name: "Jane",
+    last_name: "Smith",
     bio: "Aspiring software engineer",
     skills: JSON.stringify(["HTML", "CSS", "JavaScript"]),
     availability: JSON.stringify(["Tue", "Thu"]),
@@ -26,11 +29,13 @@ export default [
     mentoring_style: "Collaborative",
     previous_experience: "Junior developer",
     goals: "Learn full-stack development",
+    mentoring_mode: "in-person",
   },
   {
     user_id: 3,
     role: "mentor",
-    name: "Alice Cooper",
+    first_name: "Alice",
+    last_name: "Cooper",
     bio: "Full-stack developer and tech lead",
     skills: JSON.stringify(["JavaScript", "Python", "AWS"]),
     availability: JSON.stringify(["Mon", "Wed", "Thu"]),
@@ -40,11 +45,13 @@ export default [
     mentoring_style: "Guided",
     previous_experience: "Tech Lead for 3 years",
     goals: "Help mentees gain leadership skills",
+    mentoring_mode: "both",
   },
   {
     user_id: 4,
     role: "mentee",
-    name: "David Lee",
+    first_name: "David",
+    last_name: "Lee",
     bio: "Aspiring cloud architect with a focus on DevOps",
     skills: JSON.stringify(["AWS", "Docker", "Kubernetes"]),
     availability: JSON.stringify(["Mon", "Tue", "Thu"]),
@@ -54,5 +61,6 @@ export default [
     mentoring_style: "Hands-on",
     previous_experience: "Junior DevOps engineer",
     goals: "Learn how to design and manage cloud infrastructure",
+    mentoring_mode: "both",
   },
 ];
