@@ -16,5 +16,12 @@ profilesRouter
   .patch(imageUpload.single("profilePicture"), profileController.update)
   .delete(profileController.remove);
 
+// profilesRouter
+//   .route("/:id/skills")
+//   .get(skillController.findOne)
+//   .post(skillController.add)
+//   .patch(skillController.update)
+//   .delete(skillController.remove);
+
 
 export default profilesRouter;
