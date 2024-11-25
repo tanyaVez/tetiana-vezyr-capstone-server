@@ -20,9 +20,6 @@ export function up(knex) {
     table.string("first_name").notNullable();
     table.string("last_name").notNullable();
     table.text("bio").nullable();
-    table.json("skills").nullable();
-    table.json("availability").nullable();
-    table.json("areas_of_interest").nullable();
     table.string("location").nullable();
     table.string("profile_picture_url").nullable();
     table.string("mentoring_style").nullable();
