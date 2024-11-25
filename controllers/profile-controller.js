@@ -1,7 +1,7 @@
 import initKnex from "knex";
 import configuration from "../knexfile.js";
 const knex = initKnex(configuration);
-import profileValidator from "../validators/profileValidator.js"
+import profileValidator from "../validators/profileValidator.js";
 
 const index = async (_req, res) => {
   try {
@@ -47,7 +47,6 @@ const add = async (req, res) => {
     role,
     first_name,
     last_name,
-    profile_picture_url,
     bio,
     skills,
     availability,
@@ -58,8 +57,7 @@ const add = async (req, res) => {
     goals,
     mentoring_mode,
   } = req.body;
-
-  
+  const profile_picture_url = req.file ? `/uploads/images/${req.file.filename}` : null;
 
   const profilesFound = await knex("user_profile").where({ user_id: req.body.user_id });
   
