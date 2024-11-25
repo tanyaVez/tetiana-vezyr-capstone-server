@@ -57,7 +57,7 @@ const add = async (req, res) => {
     goals,
     mentoring_mode,
   } = req.body;
-  const profile_picture_url = req.file ? `/uploads/images/${req.file.filename}` : null;
+  const profilePicture = req.file ? `/uploads/images/${req.file.filename}` : null;
 
   const profilesFound = await knex("user_profile").where({ user_id: req.body.user_id });
   
@@ -83,7 +83,7 @@ const add = async (req, res) => {
       availability: JSON.stringify(availability),
       areas_of_interest: JSON.stringify(areas_of_interest),
       location,
-      profile_picture_url,
+      profile_picture_url: profilePicture,
       mentoring_style,
       previous_experience,
       goals,
@@ -100,6 +100,41 @@ const add = async (req, res) => {
     console.error(error);
     res.status(500).json({
       message: "Unable to create new profile",
+    });
+  }
+};
+
+const update = async (req, res) => {
+  const profilePicture = req.file ? `/uploads/images/${req.file.filename}` : null;
+
+  try {
+    const updateData = { ...req.body };
+
+    if (profilePicture) {
+      updateData.profile_picture_url = profilePicture;
+    }
+
+    const rowsUpdated = await knex("user_profile")
+      .where({ id: req.params.id })
+      .update(updateData);
+
+
+    if (rowsUpdated === 0) {
+      return res.status(404).json({
+        message: `Profile with ID ${req.params.id} not found` 
+      });
+    }
+
+    const updatedProfile = await knex("user_profile")
+      .where({
+        id: req.params.id,
+      });
+    
+    res.json(updatedProfile[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: `Unable to update profile with ID ${req.params.id}` 
     });
   }
 };
@@ -125,4 +160,4 @@ const remove = async (req, res) => {
   }
 };
 
-export { index, findOne, add, remove };
+export { index, findOne, add, update, remove };

@@ -13,6 +13,7 @@ profilesRouter
 profilesRouter
   .route("/:id")
   .get(profileController.findOne)
+  .patch(imageUpload.single("profilePicture"), profileController.update)
   .delete(profileController.remove);
 
 
