@@ -67,18 +67,11 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-      },
-      process.env.JWT_SECRET_KEY,
-      {
-        expiresIn: "1h",
-      }
-    );
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
+    });
 
-    res.status(200).json({ token });
+    res.status(200).json({ id: user.id, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
