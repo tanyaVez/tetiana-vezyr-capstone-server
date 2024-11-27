@@ -24,8 +24,20 @@ const findOne = async (req, res) => {
       });
     }
 
-    const profileData = profilesFound[0];
-    res.json(profileData);
+    const userProfileId = profilesFound[0].id;
+
+    const profileData = await knex("user_profile")
+      .select("user_profile.*", "skills.name")
+      .leftJoin("user_skills", "user_profile.id", "user_skills.user_profile_id")
+      .leftJoin("skills", "user_skills.skill_id", "skills.id")
+      .where("user_profile.id", userProfileId);
+
+    const profile = profileData[0];
+    profile.skills = profileData
+      .map((row) => row.name)
+      .filter((skill) => skill !== null);
+
+    res.json(profile);
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -42,29 +54,25 @@ const add = async (req, res) => {
     return;
   }
 
-  const {
-    user_id,
-    role,
-    name,
-    bio,
-    location,
-    mode,
-    experience,
-    goals,
-  } = req.body;
+  const { user_id, role, name, bio, location, mode, experience, goals } =
+    req.body;
   const profilePicture = req.file ? `/uploads/images/${req.file.filename}` : "";
 
-  const profilesFound = await knex("user_profile").where({ user_id: req.body.user_id });
-  
+  const profilesFound = await knex("user_profile").where({
+    user_id: req.body.user_id,
+  });
+
   if (profilesFound.length > 0) {
     return res.status(400).json({ message: "User already has a profile" });
   }
 
   try {
-    const usersFound  = await knex("user").where({ id: user_id});
+    const usersFound = await knex("user").where({ id: user_id });
 
     if (usersFound.length === 0) {
-      res.status(400).json({ message: `User with provided id ${user_id} doesn't exist.` });
+      res
+        .status(400)
+        .json({ message: `User with provided id ${user_id} doesn't exist.` });
       return;
     }
 
@@ -80,12 +88,10 @@ const add = async (req, res) => {
       goals,
     });
 
-    res
-      .status(201)
-      .json({
-        userProfileId: result[0],
-        message: "User profile created successfully",
-      });
+    res.status(201).json({
+      userProfileId: result[0],
+      message: "User profile created successfully",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -95,7 +101,9 @@ const add = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const profilePicture = req.file ? `/uploads/images/${req.file.filename}` : null;
+  const profilePicture = req.file
+    ? `/uploads/images/${req.file.filename}`
+    : null;
 
   try {
     const updateData = { ...req.body };
@@ -108,23 +116,21 @@ const update = async (req, res) => {
       .where({ user_id: req.params.id })
       .update(updateData);
 
-
     if (rowsUpdated === 0) {
       return res.status(404).json({
-        message: `User Profile with ID ${req.params.id} not found` 
+        message: `User Profile with ID ${req.params.id} not found`,
       });
     }
 
-    const updatedProfile = await knex("user_profile")
-      .where({
-        id: req.params.id,
-      });
-    
+    const updatedProfile = await knex("user_profile").where({
+      id: req.params.id,
+    });
+
     res.json(updatedProfile[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: `Unable to update profile for user with ID ${req.params.id}` 
+      message: `Unable to update profile for user with ID ${req.params.id}`,
     });
   }
 };
