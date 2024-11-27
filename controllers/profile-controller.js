@@ -45,16 +45,14 @@ const add = async (req, res) => {
   const {
     user_id,
     role,
-    first_name,
-    last_name,
+    name,
     bio,
     location,
-    mentoring_style,
-    previous_experience,
+    mode,
+    experience,
     goals,
-    mentoring_mode,
   } = req.body;
-  const profilePicture = req.file ? `/uploads/images/${req.file.filename}` : null;
+  const profilePicture = req.file ? `/uploads/images/${req.file.filename}` : "";
 
   const profilesFound = await knex("user_profile").where({ user_id: req.body.user_id });
   
@@ -72,16 +70,14 @@ const add = async (req, res) => {
 
     const result = await knex("user_profile").insert({
       user_id,
-      first_name,
-      last_name,
+      name,
       role,
       bio,
       location,
       profile_picture_url: profilePicture,
-      mentoring_style,
-      previous_experience,
+      mode,
+      experience,
       goals,
-      mentoring_mode,
     });
 
     res
@@ -109,13 +105,13 @@ const update = async (req, res) => {
     }
 
     const rowsUpdated = await knex("user_profile")
-      .where({ id: req.params.id })
+      .where({ user_id: req.params.id })
       .update(updateData);
 
 
     if (rowsUpdated === 0) {
       return res.status(404).json({
-        message: `Profile with ID ${req.params.id} not found` 
+        message: `User Profile with ID ${req.params.id} not found` 
       });
     }
 
@@ -128,7 +124,7 @@ const update = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: `Unable to update profile with ID ${req.params.id}` 
+      message: `Unable to update profile for user with ID ${req.params.id}` 
     });
   }
 };

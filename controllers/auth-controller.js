@@ -13,9 +13,10 @@ const signup = async (req, res) => {
     return;
   }
 
-  const { email, password } = req.body;
+  const { email, password, firstName, lastName, role } = req.body;
   const normalizedEmail = email.trim().toLowerCase();
 
+  const trx = await knex.transaction();
   try {
     const user  = await knex("user").where({ email: normalizedEmail});
 
@@ -27,20 +28,28 @@ const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = {
+    const [userId] = await trx('user').insert({
       email: normalizedEmail,
-      password: hashedPassword
-    };
+      password: hashedPassword,
+    })
+   
+    await trx('user_profile').insert({
+      user_id: userId,
+      first_name: firstName,
+      last_name: lastName,
+      role,
+    });
 
-    const result = await knex("user").insert(newUser);
+    await trx.commit();
 
-    const newUserId = result[0];
+    const token = jwt.sign({ id: userId }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
+    });
 
-    const createdUser = await knex("user").where({ id: newUserId });
-
-    res.status(201).json(createdUser);
+    return res.status(201).send({ id: userId, token });
   } catch (error) {
     console.error(error)
+    await trx.rollback();
     res.status(500).json({
       message: "Unable to create new user",
     });
@@ -64,7 +73,7 @@ const login = async (req, res) => {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res.status(401).json({ message: "Invalid password" });
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
