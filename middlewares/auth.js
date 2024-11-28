@@ -16,7 +16,7 @@ const checkAuth = async (req, res, next) => {
     if (err) {
       return res.status(498).json({ message: "Token validation failed" });
     }
-    req.user = decoded;
+    req.userData = decoded;
     req.timeOfRequest = Date.now();
     next();
   });

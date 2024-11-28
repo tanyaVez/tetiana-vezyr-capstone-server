@@ -2,6 +2,8 @@ import initKnex from "knex";
 import configuration from "../knexfile.js";
 const knex = initKnex(configuration);
 import profileValidator from "../validators/profileValidator.js";
+import { deleteFileIfExists } from "../utils/file-utils.js";
+
 
 const index = async (_req, res) => {
   try {
@@ -102,13 +104,32 @@ const add = async (req, res) => {
 
 const update = async (req, res) => {
   const profilePicture = req.file
-    ? `/uploads/images/${req.file.filename}`
+    ? `/public/images/${req.file.filename}`
     : null;
 
   try {
+    const profilesFound = await knex("user_profile").where({
+      user_id: req.params.id,
+    });
+
+    if (profilesFound.length === 0) {
+      return res.status(400).json({
+        message: `There is no profile for user with id: ${req.params.id}.`,
+      });
+    }
+
+    const ownerId = req.userData.id;
+
+    if (profilesFound[0].user_id.toString() !== ownerId.toString()) {
+      return res
+        .status(401)
+        .send("User is not authorized to perform this action");
+    }
+
     const updateData = { ...req.body };
 
     if (profilePicture) {
+      deleteFileIfExists(profilesFound[0].profile_picture_url);
       updateData.profile_picture_url = profilePicture;
     }
 
@@ -123,10 +144,10 @@ const update = async (req, res) => {
     }
 
     const updatedProfile = await knex("user_profile").where({
-      id: req.params.id,
+      user_id: req.params.id,
     });
 
-    res.json(updatedProfile[0]);
+    res.status(200).json(updatedProfile[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({
