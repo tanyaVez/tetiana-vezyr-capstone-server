@@ -2,6 +2,7 @@ import express from "express";
 import * as profileController from "../controllers/profile-controller.js";
 import imageUpload from "../middlewares/imageUpload.js";
 import checkAuth from "../middlewares/auth.js";
+import resizeImage from "../middlewares/resizeImage.js";
 
 const profilesRouter = express.Router();
 
@@ -14,7 +15,7 @@ profilesRouter
 profilesRouter
   .route("/:id")
   .get(checkAuth, profileController.findOne)
-  .patch(checkAuth, imageUpload.single("profilePicture"), profileController.update)
+  .patch(checkAuth, imageUpload.single("profilePicture"), resizeImage, profileController.update)
   .delete(checkAuth, profileController.remove);
 
 // profilesRouter
