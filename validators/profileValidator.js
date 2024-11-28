@@ -3,8 +3,8 @@ function profileValidator(profile) {
   const validRoles = ["mentor", "mentee", "admin"];
   const validMentoringModes = ["in-person", "online", "both"];
 
-  if (!profile.user_id || !profile.first_name || !profile.last_name || !profile.role) {
-    errorMessages.push("UserId, first name, last name, and role are required.");
+  if (!profile.user_id || !profile.user_name || !profile.role) {
+    errorMessages.push("UserId, name, and role are required.");
   }
 
   if (profile.role && !validRoles.includes(profile.role)) {
@@ -12,8 +12,8 @@ function profileValidator(profile) {
   }
 
   if (
-    profile.mentoring_mode &&
-    !validMentoringModes.includes(profile.mentoring_mode)
+    profile.mode &&
+    !validMentoringModes.includes(profile.mode)
   ) {
     errorMessages.push(
       "Mentoring mode must be one of: 'in-person', 'online', or 'both'."
