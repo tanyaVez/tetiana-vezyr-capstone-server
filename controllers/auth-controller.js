@@ -13,7 +13,7 @@ const signup = async (req, res) => {
     return;
   }
 
-  const { email, password, name, role } = req.body;
+  const { email, password, user_name, role } = req.body;
   const normalizedEmail = email.trim().toLowerCase();
 
   const trx = await knex.transaction();
@@ -35,7 +35,7 @@ const signup = async (req, res) => {
    
     await trx('user_profile').insert({
       user_id: userId,
-      name,
+      user_name,
       role,
     });
 

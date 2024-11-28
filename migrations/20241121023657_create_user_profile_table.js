@@ -17,7 +17,7 @@ export function up(knex) {
       .enu("role", ["mentor", "mentee", "admin"])
       .notNullable()
       .defaultTo("mentee");
-    table.string("name").notNullable();
+    table.string("user_name").notNullable();
     table.text("bio").nullable();
     table.string("location").nullable();
     table.string("profile_picture_url").nullable();
