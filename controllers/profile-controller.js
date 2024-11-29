@@ -104,7 +104,7 @@ const add = async (req, res) => {
 
 const update = async (req, res) => {
   const profilePicture = req.file
-    ? `/public/images/${req.file.filename}`
+    ? `/images/${req.file.filename}`
     : null;
 
   try {
@@ -176,5 +176,6 @@ const remove = async (req, res) => {
     });
   }
 };
+
 
 export { index, findOne, add, update, remove };

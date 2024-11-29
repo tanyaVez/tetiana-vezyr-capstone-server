@@ -5,7 +5,7 @@ export default [
     user_name: "John Doe",
     bio: "Experienced software developer and mentor with over 10 years in web development. Passionate about teaching and empowering others to achieve their goals in tech.",
     location: "New York, USA",
-    profile_picture_url: "https://example.com/john.jpg",
+    profile_picture_url: "",
     mode: "online",
     experience: "5+ years in front-end and back-end technologies (React, Node.js).",
     goals: "Help mentees become independent developers with a focus on best practices and career growth.",
