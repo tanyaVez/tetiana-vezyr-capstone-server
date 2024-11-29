@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 export function up(knex) {
-  return knex.schema.createTable("connection_request", (table) => {
+  return knex.schema.createTable("connections", (table) => {
     table.increments("id").primary();
     table
     .integer("sender_id")
@@ -19,7 +19,6 @@ export function up(knex) {
     .inTable("user")
     .onUpdate("CASCADE")
     .onDelete("CASCADE");
-    table.enu("status", ["accepted", "pending", "declined"]).notNullable();
     table.string("sorted_sender_receiver").notNullable().unique();
     table.timestamps(true, true);
   });
@@ -30,5 +29,5 @@ export function up(knex) {
  * @returns { Promise<void> }
  */
 export function down(knex) {
-  return knex.schema.dropTableIfExists("connection_request");
+  return knex.schema.dropTableIfExists("connections");
 }
