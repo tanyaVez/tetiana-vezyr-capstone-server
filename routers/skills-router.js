@@ -5,12 +5,6 @@ const skillsRouter = express.Router();
 
 skillsRouter.route("/").get(skillController.getAllSkills);
 
-// skillsRouter
-// .route("/profiles/:profileId/skills")
-// .get(skillController.getSkillsForUserProfile)
-// .put(skillController.updateSkillsForUserProfile)
-
-
 export default skillsRouter;
 
 

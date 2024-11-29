@@ -177,5 +177,70 @@ const remove = async (req, res) => {
   }
 };
 
+const addSkills = async (req, res) => {
+  const { skills } = req.body;
+  const { userId } = req.params.id;
 
-export { index, findOne, add, update, remove };
+  const trx = await knex.transaction();
+
+  try {
+    const profilesFound = await trx("user_profile").where({
+      user_id: req.params.id,
+    });
+
+    if (profilesFound.length === 0) {
+      return res.status(400).json({
+        message: `There is no profile for user with id: ${userId}.`,
+      });
+    }
+
+    const ownerId = req.userData.id;
+
+    if (profilesFound[0].user_id.toString() !== ownerId.toString()) {
+      return res
+        .status(401)
+        .send("User is not authorized to perform this action");
+    }
+
+    const profileId = profilesFound[0].id
+
+    const existingSkills = await trx("skills")
+      .whereIn("name", skills)
+      .select("id", "name");
+
+    const existingSkillNames = existingSkills.map((skill) => skill.name);
+
+    const invalidSkills = skills.filter(
+      (skill) => !existingSkillNames.includes(skill)
+    );
+
+    if (invalidSkills.length > 0) {
+      return res.status(400).json({
+        message: `Invalid skills selected: ${invalidSkills.join(", ")}`,
+      });
+    }
+
+    await trx("user_skills").where("user_profile_id", profileId).del();
+
+    const selectedSkills = existingSkills.map((skill) => ({
+      user_profile_id: profileId,
+      skill_id: skill.id,
+    }));
+
+    await trx("user_skills").insert(selectedSkills);
+
+    await trx.commit();
+
+    return res.status(200).json({ message: "Skills updated successfully!" });
+  } catch (error) {
+    await trx.rollback();
+
+    console.error(error);
+    return res.status(500).json({
+      message: "Unable to update skills",
+    });
+  }
+};
+
+
+export { index, findOne, add, update, remove, addSkills };
