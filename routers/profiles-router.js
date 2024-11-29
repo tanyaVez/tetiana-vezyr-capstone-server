@@ -18,12 +18,10 @@ profilesRouter
   .patch(checkAuth, imageUpload.single("profilePicture"), resizeImage, profileController.update)
   .delete(checkAuth, profileController.remove);
 
-// profilesRouter
-//   .route("/:id/skills")
-//   .get(skillController.findOne)
-//   .post(skillController.add)
-//   .patch(skillController.update)
-//   .delete(skillController.remove);
+profilesRouter
+  .route("/:id/skills")
+  .post(checkAuth, profileController.addSkills)
+
 
 
 export default profilesRouter;
