@@ -5,10 +5,23 @@ import profileValidator from "../validators/profileValidator.js";
 import { deleteFileIfExists } from "../utils/file-utils.js";
 
 
-const index = async (_req, res) => {
+const index = async (req, res) => {
+  const currentUserId = req.userData.id
   try {
-    const data = await knex("user_profile");
-    res.status(200).json(data);
+    const connections = await knex("connections")
+      .where("sender_id", currentUserId)
+      .orWhere("receiver_id", currentUserId)
+      .select("sender_id", "receiver_id");
+
+    const connectedUserIds = connections.map(conn =>
+      conn.sender_id === currentUserId ? conn.receiver_id : conn.sender_id
+    );
+
+    const profiles = await knex("user_profile")
+      .whereNot("user_id", currentUserId)
+      .whereNotIn("user_id", connectedUserIds);
+
+    res.status(200).json(profiles);
   } catch (err) {
     res.status(400).send(`Error retrieving Profiles: ${err}`);
   }
