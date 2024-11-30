@@ -4,22 +4,61 @@ const knex = initKnex(configuration);
 import profileValidator from "../validators/profileValidator.js";
 import { deleteFileIfExists } from "../utils/file-utils.js";
 
-
 const index = async (req, res) => {
-  const currentUserId = req.userData.id
+  const currentUserId = req.userData.id;
+  const { role, location, user_name, mode, experience, goals, skills } = req.query;
   try {
     const connections = await knex("connections")
       .where("sender_id", currentUserId)
       .orWhere("receiver_id", currentUserId)
       .select("sender_id", "receiver_id");
 
-    const connectedUserIds = connections.map(conn =>
+    const connectedUserIds = connections.map((conn) =>
       conn.sender_id === currentUserId ? conn.receiver_id : conn.sender_id
     );
 
-    const profiles = await knex("user_profile")
+      const profilesQuery = knex("user_profile")
       .whereNot("user_id", currentUserId)
-      .whereNotIn("user_id", connectedUserIds);
+      .whereNotIn("user_id", connectedUserIds)
+      .select("user_profile.*")
+      .leftJoin("user_skills", "user_profile.id", "user_skills.user_profile_id")
+      .leftJoin("skills", "user_skills.skill_id", "skills.id")
+      .select(knex.raw('GROUP_CONCAT(skills.name) as skills'))
+      .groupBy("user_profile.id");
+
+    if (role) {
+      profilesQuery.where("user_profile.role", role);
+    }
+
+    if (location) {
+      profilesQuery.where("user_profile.location", "like", `%${location}%`);
+    }
+
+    if (user_name) {
+      profilesQuery.where("user_profile.user_name", "like", `%${user_name}%`);
+    }
+
+    if (mode) {
+      profilesQuery.where("user_profile.mode", "like", `%${mode}%`);
+    }
+
+    if (experience) {
+      profilesQuery.where("user_profile.experience", "like", `%${experience}%`);
+    }
+
+    if (goals) {
+      profilesQuery.where("user_profile.mode", "like", `%${goals}%`);
+    }
+
+    if (skills) {
+      const skillsArray = skills.split(",");
+      const likeConditions = skillsArray
+        .map(skill => `skills LIKE '%${skill}%'`)
+        .join(" AND ");
+      profilesQuery.having(knex.raw(likeConditions));
+    }
+
+    const profiles = await profilesQuery;
 
     res.status(200).json(profiles);
   } catch (err) {
@@ -116,9 +155,7 @@ const add = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const profilePicture = req.file
-    ? `/images/${req.file.filename}`
-    : null;
+  const profilePicture = req.file ? `/images/${req.file.filename}` : null;
 
   try {
     const profilesFound = await knex("user_profile").where({
@@ -215,7 +252,7 @@ const addSkills = async (req, res) => {
         .send("User is not authorized to perform this action");
     }
 
-    const profileId = profilesFound[0].id
+    const profileId = profilesFound[0].id;
 
     const existingSkills = await trx("skills")
       .whereIn("name", skills)
@@ -254,6 +291,5 @@ const addSkills = async (req, res) => {
     });
   }
 };
-
 
 export { index, findOne, add, update, remove, addSkills };
