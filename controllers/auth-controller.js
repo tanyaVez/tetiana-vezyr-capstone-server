@@ -42,7 +42,7 @@ const signup = async (req, res) => {
     await trx.commit();
 
     const token = jwt.sign({ id: userId }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1h",
+      expiresIn: "24h",
     });
 
     return res.status(201).send({ id: userId, token });
@@ -76,7 +76,7 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1h",
+      expiresIn: "24h",
     });
 
     res.status(200).json({ id: user.id, token });
