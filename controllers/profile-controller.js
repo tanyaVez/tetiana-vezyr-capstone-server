@@ -6,7 +6,8 @@ import { deleteFileIfExists } from "../utils/file-utils.js";
 
 const index = async (req, res) => {
   const currentUserId = req.userData.id;
-  const { role, location, user_name, mode, experience, goals, skills } = req.query;
+  const { role, location, user_name, mode, experience, goals, skills } =
+    req.query;
   try {
     const connections = await knex("connections")
       .where("sender_id", currentUserId)
@@ -17,13 +18,13 @@ const index = async (req, res) => {
       conn.sender_id === currentUserId ? conn.receiver_id : conn.sender_id
     );
 
-      const profilesQuery = knex("user_profile")
+    const profilesQuery = knex("user_profile")
       .whereNot("user_id", currentUserId)
       .whereNotIn("user_id", connectedUserIds)
       .select("user_profile.*")
       .leftJoin("user_skills", "user_profile.id", "user_skills.user_profile_id")
       .leftJoin("skills", "user_skills.skill_id", "skills.id")
-      .select(knex.raw('GROUP_CONCAT(skills.name) as skills'))
+      .select(knex.raw("GROUP_CONCAT(skills.name) as skills"))
       .groupBy("user_profile.id");
 
     if (role) {
@@ -39,7 +40,14 @@ const index = async (req, res) => {
     }
 
     if (mode) {
-      profilesQuery.where("user_profile.mode", "like", `%${mode}%`);
+      if (mode === "both") {
+      } else if (mode === "online") {
+        profilesQuery.where("user_profile.mode", "in", ["online", "both"]);
+      } else if (mode === "in-person") {
+        profilesQuery.where("user_profile.mode", "in", ["in-person", "both"]);
+      } else {
+        profilesQuery.where("user_profile.mode", "like", `%${mode}%`);
+      }
     }
 
     if (experience) {
@@ -50,11 +58,11 @@ const index = async (req, res) => {
       profilesQuery.where("user_profile.mode", "like", `%${goals}%`);
     }
 
-    if (skills) {
-      const skillsArray = skills.split(",");
-      const likeConditions = skillsArray
-        .map(skill => `skills LIKE '%${skill}%'`)
+    if (Array.isArray(skills) && skills.length > 0) {
+      const likeConditions = skills
+        .map((skill) => knex.raw("skills LIKE ?", [`%${skill}%`]))
         .join(" AND ");
+
       profilesQuery.having(knex.raw(likeConditions));
     }
 

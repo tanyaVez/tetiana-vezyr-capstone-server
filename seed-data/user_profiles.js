@@ -7,7 +7,7 @@ export default [
     location: "Toronto, ON",
     profile_picture_url: "",
     mode: "online",
-    experience: "5+ years in front-end and back-end technologies (React, Node.js).",
+    experience: "5+ years in software development",
     goals: "Help mentees become independent developers with a focus on best practices and career growth.",
   },
   {
@@ -18,7 +18,7 @@ export default [
     location: "Toronto, ON",
     profile_picture_url: "",
     mode: "in-person",
-    experience: "Junior developer with experience in HTML, CSS, JavaScript, and React.",
+    experience: "Entry-level developer",
     goals: "Learn full-stack development and secure a junior developer role in a tech company.",
   },
   {
@@ -29,7 +29,7 @@ export default [
     location: "Vancouver, BC",
     profile_picture_url: "",
     mode: "both",
-    experience: "Tech Lead for 3 years, expert in JavaScript, React, Node.js.",
+    experience: "8+ years in full-stack development and leadership",
     goals: "Mentor mentees to develop leadership skills and become effective engineers.",
   },
   {
@@ -40,7 +40,7 @@ export default [
     location: "Vancouver, BC",
     profile_picture_url: "",
     mode: "both",
-    experience: "Junior DevOps engineer with exposure to AWS, GCP, and Terraform.",
+    experience: "Junior DevOps engineer",
     goals: "Learn to design and manage cloud infrastructure and automate workflows.",
   },
   {
@@ -51,7 +51,7 @@ export default [
     location: "Montreal, QC",
     profile_picture_url: "",
     mode: "online",
-    experience: "Extensive experience in Java, Python, and cloud computing technologies.",
+    experience: "15+ years in software engineering and mentoring",
     goals: "Share knowledge about design patterns, clean code, and software architecture with the next generation of developers.",
   },
   {
@@ -62,7 +62,7 @@ export default [
     location: "Montreal, QC",
     profile_picture_url: "",
     mode: "in-person",
-    experience: "Familiar with Java, Kotlin, and basic Android SDK.",
+    experience: "Junior Android developer",
     goals: "Become proficient in Android development and secure a job as a mobile app developer.",
   },
   {
@@ -73,7 +73,7 @@ export default [
     location: "Calgary, AB",
     profile_picture_url: "",
     mode: "both",
-    experience: "Expert in cloud technologies, microservices, and distributed systems.",
+    experience: "5+ years in backend development and cloud systems",
     goals: "Help mentees gain experience with system architecture, cloud computing, and scaling large applications.",
   },
   {
@@ -84,7 +84,7 @@ export default [
     location: "Calgary, AB",
     profile_picture_url: "",
     mode: "in-person",
-    experience: "Experience with Python, Node.js, and basic cloud services.",
+    experience: "Junior developer",
     goals: "Learn to design scalable systems and work with cloud technologies.",
   },
   {
@@ -95,7 +95,7 @@ export default [
     location: "Ottawa, ON",
     profile_picture_url: "",
     mode: "online",
-    experience: "Specialized in cloud-native development, AWS, and Kubernetes.",
+    experience: "12+ years in cloud computing and team leadership",
     goals: "Help mentees develop cloud-based applications and learn DevOps practices.",
   },
   {
@@ -106,7 +106,7 @@ export default [
     location: "Ottawa, ON",
     profile_picture_url: "",
     mode: "both",
-    experience: "Experience with AWS, Docker, and Terraform.",
+    experience: "Junior cloud engineer",
     goals: "Advance my career by gaining expertise in cloud architecture and DevOps.",
   },
   {
@@ -117,7 +117,7 @@ export default [
     location: "Edmonton, AB",
     profile_picture_url: "",
     mode: "both",
-    experience: "5+ years working on both iOS and Android apps with a focus on user-centered design.",
+    experience: "6+ years in mobile app development and UI/UX design",
     goals: "Help mentees become proficient in mobile app development and design.",
   },
   {
@@ -128,7 +128,7 @@ export default [
     location: "Edmonton, AB",
     profile_picture_url: "",
     mode: "in-person",
-    experience: "Familiar with Java, Kotlin, and basic mobile app development.",
+    experience: "Junior Android developer",
     goals: "Master mobile app development and design user-friendly applications.",
   },
   {
@@ -139,7 +139,7 @@ export default [
     location: "Toronto, ON",
     profile_picture_url: "",
     mode: "online",
-    experience: "10+ years working with Node.js, Express, and large-scale backend systems.",
+    experience: "10+ years in backend engineering and system architecture",
     goals: "Mentor mentees on backend development, system design, and API architecture.",
   },
   {
@@ -150,7 +150,7 @@ export default [
     location: "Toronto, ON",
     profile_picture_url: "",
     mode: "both",
-    experience: "Basic experience with REST APIs and cloud infrastructure.",
+    experience: "Entry-level backend developer",
     goals: "Learn advanced backend development techniques and API design.",
   },
   {
@@ -161,7 +161,7 @@ export default [
     location: "Edmonton, AB",
     profile_picture_url: "",
     mode: "both",
-    experience: "5+ years working with full-stack JavaScript (React, Node.js), and cloud-native architectures.",
+    experience: "5+ years in full-stack development and team management",
     goals: "Help mentees with full-stack development and improve team collaboration skills.",
   },
   {
@@ -172,7 +172,7 @@ export default [
     location: "Edmonton, AB",
     profile_picture_url: "",
     mode: "in-person",
-    experience: "Experience with JavaScript, HTML, CSS, and React.",
+    experience: "Junior full-stack developer",
     goals: "Learn advanced JavaScript frameworks and become a proficient full-stack developer.",
   },
   {
@@ -183,7 +183,7 @@ export default [
     location: "Vancouver, BC",
     profile_picture_url: "",
     mode: "online",
-    experience: "Specialized in microservices, Kubernetes, and cloud-based solutions.",
+    experience: "10+ years in cloud architecture and distributed systems",
     goals: "Help mentees understand the principles of scalable architecture and cloud technologies.",
   },
   {
@@ -194,7 +194,7 @@ export default [
     location: "Vancouver, BC",
     profile_picture_url: "",
     mode: "both",
-    experience: "Familiar with JavaScript, Node.js, and RESTful API development.",
+    experience: "Entry-level developer",
     goals: "Learn advanced system design techniques and architectural patterns.",
   },
   {
@@ -205,7 +205,7 @@ export default [
     location: "Vancouver, BC",
     profile_picture_url: "",
     mode: "online",
-    experience: "Expert in AWS, Terraform, and CI/CD pipelines.",
+    experience: "10+ years in DevOps and infrastructure automation",
     goals: "Help mentees gain practical experience with DevOps tools and cloud platforms.",
   },
   {
@@ -216,8 +216,7 @@ export default [
     location: "Vancouver, BC",
     profile_picture_url: "",
     mode: "both",
-    experience: "Familiar with Docker, Kubernetes, and basic cloud services.",
+    experience: "Entry-level DevOps engineer",
     goals: "Learn DevOps best practices and automation tools for efficient infrastructure management.",
   }
 ];
-
